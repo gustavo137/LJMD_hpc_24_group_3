@@ -1,5 +1,12 @@
 # LJMD_hpc_24_group_3
-update of the readme file to test the pull request on the canonical repository
 
-Second line
-third line
+Repository content
+
+01-ljmd ---> folder with source code.
+development.log.txt ---> developers document with a report of implemented features
+
+Developers
+
+Giacomo Zuccarino - giacomozuccarino@gmail.com
+Gustavo Paredes - gparedes@ictp.it
+Ludwig Asturias - lasturia@ictp.it
