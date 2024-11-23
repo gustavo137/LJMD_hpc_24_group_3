@@ -8,6 +8,7 @@ configure_file(LJMDConfig.h.in LJMDConfig.h @ONLY)
 
 # add the executable
 add_executable(ljmd-serial.x src/ljmd.c)
+target_compile_options(ljmd-serial.x PUBLIC -Wall -g -O3 -ffast-math -fomit-frame-pointer)
 # link math.h
 target_link_libraries(ljmd-serial.x m)
 
