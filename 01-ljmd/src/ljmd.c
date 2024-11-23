@@ -12,9 +12,6 @@
 #include <math.h>
 #include <sys/time.h>
 
-/* Include version number */
-#include "LJMDConfig.h"
-
 /* generic file- or pathname buffer length */
 #define BLEN 200
 
