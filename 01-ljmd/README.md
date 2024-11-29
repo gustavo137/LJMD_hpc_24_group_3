@@ -1,9 +1,24 @@
 ## A Simple LJ Many-Body Simulator - Optimization and Parallelization
 
+This report shows the results of the optimization we performed for the Lennard-Jones Potential for Many-Body simulator. Throughout the work process, the three members of the group contributed hard. In general, the work was divided as follows:
+
+ - Single-core optimization (assigned to Ludwig Asturias)
+ - MPI parallelization (assigned to Giacomo Zuccarino)
+ - OMP parallelization  (assigned to Gustavo Paredes)
+
+ Mainly the optimizations focused on the force and Verlet functions, more than anything the force function was the one we worked on the most.
+
 ### The LJ Model for Liquid Argon
 
-Cubic box of particles with a Lennard-Jones type pair-wise additive interaction
-potential.
+The Lennard-Jones potential is a simple model that still manages to describe
+the essential features of interactions between simple atoms: Two
+interacting particles repel each other at very close distance, attract each
+other at moderate distance, and stop interacting if the distance is 
+larger than
+a defined cutoff (i.e. LJ potential is truncated).
+
+![](./report/fig/potential-lj.png)
+
 
 ### Build LJMD
 
@@ -53,20 +68,61 @@ LJMD in parallel.
 > -D ENABLE_TESTING=value   # ON/OFF, default is OFF
 > ```
 
+
+
+### Initial Serial Code
+
+In the following profiling we can see which functions we need to do more work on.
+
+
+```shell
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+   %   cumulative   self              self     total
+  time   seconds   seconds    calls  us/call  us/call  name
+  73.22      3.24     3.24    10001   324.33   406.91  force
+  16.61      3.98     0.74 346714668     0.00     0.00  pbc
+   7.01      4.29     0.31                             _init
+   2.03      4.38     0.09    30006     3.00     3.00  azzero
+   0.90      4.42     0.04    10000     4.00   410.91  velverlet
+   0.34      4.43     0.02    10001     1.50     1.50  ekin
+   0.00      4.43     0.00      101     0.00     0.00  output
+   0.00      4.43     0.00       12     0.00     0.00  get_a_line
+```
+Several of the features that are taking the most time can be worked on. Significant improvements have been made to most features.
 ### Results
 
+The results for the different optimizations performed are shown. 
+In each of the parallelization implementations, it is observed that the time scales as the available resources increase. Results obtained from Leonardo.
+
 #### MPI
+Resuls from Leonardo.
 
 ![](./report/fig/runtime-mpi.png)
 
 #### OMP
+OMP results from Leonardo.
 
 ![](./report/fig/runtime-omp.png)
 
 #### Hybrid
+
+Hybrid results from Leonardo. 
+
 ![](./report/fig/runtime-hyb.png)
 
 #### Speedup comparison
+Speedup comparison with the results from Leonardo.
 
 ![](./report/fig/speedup-comparison.png)
+
+The speedup in Ulysses in the next picture shows the same behavior as in Leonardo.
+
+![](./report/fig/speedup-comparison-uly.png)
+
+#### Summary 
+
+A significant improvement is observed in all results but better speedups are shown for a higher number of atoms. A higher number of atoms provides more computational work that benefits from parallel processing, reducing the relative impact of communication overhead and serial execution parts, thus achieving better speedups.
+
 
